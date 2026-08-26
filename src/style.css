@@ -1,0 +1,366 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   KOPA CONNECT — GLOBAL STYLES
+   ============================================ */
+
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-gray-800 bg-gray-50 antialiased;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  :root {
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-left: env(safe-area-inset-left, 0px);
+    --safe-area-right: env(safe-area-inset-right, 0px);
+    --nav-height: 64px;
+    --header-height: 56px;
+    --primary: #1a6b3a;
+    --primary-light: #28a45a;
+    --primary-pale: #e8f5ee;
+  }
+
+  /* Mobile scrollbar hidden */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  * {
+    scrollbar-width: none;
+    ms-overflow-style: none;
+  }
+
+  /* Focus visible only for keyboard */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+}
+
+@layer components {
+
+  /* =================== BUTTONS =================== */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-2xl transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed select-none cursor-pointer;
+    min-height: 44px;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 active:scale-95 shadow-sm hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply btn bg-primary-50 text-primary-600 hover:bg-primary-100 active:scale-95;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-primary-600 text-primary-600 hover:bg-primary-50 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply btn text-gray-600 hover:bg-gray-100 active:scale-95;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-500 text-white hover:bg-red-600 active:scale-95;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-md {
+    @apply px-5 py-2.5 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3.5 text-base;
+  }
+
+  .btn-xl {
+    @apply px-8 py-4 text-lg w-full;
+  }
+
+  /* =================== INPUTS =================== */
+  .input {
+    @apply w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-sm;
+    min-height: 48px;
+  }
+
+  .input-error {
+    @apply border-red-400 focus:ring-red-400;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-700 mb-1.5;
+  }
+
+  .input-hint {
+    @apply text-xs text-gray-400 mt-1;
+  }
+
+  .error-msg {
+    @apply text-xs text-red-500 mt-1 flex items-center gap-1;
+  }
+
+  .form-group {
+    @apply flex flex-col gap-1;
+  }
+
+  /* =================== CARDS =================== */
+  .card {
+    @apply bg-white rounded-2xl shadow-card border border-gray-100;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-card-hover transition-shadow duration-200 cursor-pointer;
+  }
+
+  .card-body {
+    @apply p-4;
+  }
+
+  /* =================== BADGES =================== */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-green {
+    @apply badge bg-primary-50 text-primary-700;
+  }
+
+  .badge-gray {
+    @apply badge bg-gray-100 text-gray-600;
+  }
+
+  .badge-orange {
+    @apply badge bg-orange-50 text-orange-700;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-50 text-blue-700;
+  }
+
+  .badge-red {
+    @apply badge bg-red-50 text-red-600;
+  }
+
+  /* =================== AVATAR =================== */
+  .avatar {
+    @apply rounded-full object-cover ring-2 ring-white flex-shrink-0;
+  }
+
+  .avatar-sm {
+    @apply w-8 h-8;
+  }
+
+  .avatar-md {
+    @apply w-10 h-10;
+  }
+
+  .avatar-lg {
+    @apply w-14 h-14;
+  }
+
+  .avatar-xl {
+    @apply w-20 h-20;
+  }
+
+  .avatar-2xl {
+    @apply w-28 h-28;
+  }
+
+  /* =================== APP LAYOUT =================== */
+  .app-shell {
+    @apply min-h-screen bg-gray-50;
+  }
+
+  .mobile-header {
+    @apply fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-100 flex items-center justify-between px-4;
+    height: var(--header-height);
+    padding-top: var(--safe-area-top);
+  }
+
+  .mobile-nav {
+    @apply fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 shadow-nav flex items-center;
+    height: calc(var(--nav-height) + var(--safe-area-bottom));
+    padding-bottom: var(--safe-area-bottom);
+  }
+
+  .page-content {
+    @apply pb-24;
+    padding-top: calc(var(--header-height) + var(--safe-area-top));
+  }
+
+  .page-content-no-header {
+    @apply pb-24;
+  }
+
+  /* =================== MODALS =================== */
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end justify-center sm:items-center;
+  }
+
+  .modal-panel {
+    @apply bg-white rounded-t-3xl sm:rounded-3xl w-full sm:max-w-lg max-h-[90vh] overflow-y-auto animate-slide-up shadow-2xl;
+  }
+
+  .modal-header {
+    @apply flex items-center justify-between p-5 border-b border-gray-100;
+  }
+
+  /* =================== SKELETON =================== */
+  .skeleton {
+    @apply bg-gray-200 rounded-xl animate-pulse;
+  }
+
+  /* =================== DIVIDERS =================== */
+  .divider {
+    @apply flex items-center gap-4 text-gray-400 text-sm;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    @apply flex-1 h-px bg-gray-200;
+  }
+
+  /* =================== SECTION HEADERS =================== */
+  .section-header {
+    @apply flex items-center justify-between px-4 py-3;
+  }
+
+  .section-title {
+    @apply text-base font-semibold text-gray-800;
+  }
+
+  .section-link {
+    @apply text-sm font-medium text-primary-600 hover:text-primary-700;
+  }
+
+  /* =================== TAB NAVIGATION =================== */
+  .tabs {
+    @apply flex bg-gray-100 rounded-2xl p-1 gap-1;
+  }
+
+  .tab {
+    @apply flex-1 text-center py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200;
+  }
+
+  .tab-active {
+    @apply bg-white text-primary-600 shadow-card font-semibold;
+  }
+
+  .tab-inactive {
+    @apply text-gray-500 hover:text-gray-700;
+  }
+
+  /* =================== STATUS INDICATORS =================== */
+  .online-dot {
+    @apply w-2.5 h-2.5 rounded-full bg-green-500 ring-2 ring-white absolute bottom-0 right-0;
+  }
+
+  /* =================== FEED =================== */
+  .feed-post {
+    @apply card mb-3;
+  }
+
+  .feed-actions {
+    @apply flex items-center gap-1 pt-3 border-t border-gray-100 mt-3;
+  }
+
+  .feed-action-btn {
+    @apply btn-ghost btn-sm flex-1 text-gray-500 hover:text-primary-600;
+  }
+
+  /* =================== NAV ITEMS =================== */
+  .nav-item {
+    @apply flex flex-col items-center justify-center gap-0.5 flex-1 py-2 text-gray-400 transition-colors duration-200 cursor-pointer select-none;
+    min-height: 44px;
+  }
+
+  .nav-item-active {
+    @apply text-primary-600;
+  }
+
+  .nav-item-label {
+    @apply text-[10px] font-medium;
+  }
+
+  /* =================== CREATE FAB =================== */
+  .create-fab {
+    @apply w-12 h-12 rounded-2xl bg-primary-600 flex items-center justify-center shadow-float transition-all duration-200 active:scale-95 cursor-pointer;
+  }
+
+  /* =================== CAMP BANNER =================== */
+  .camp-banner {
+    @apply bg-gradient-to-br from-primary-600 to-primary-800 text-white rounded-2xl p-4;
+  }
+
+  /* =================== PERSON CARD =================== */
+  .person-card {
+    @apply card-hover p-4 flex flex-col items-center text-center gap-3;
+  }
+
+  /* =================== JOB CARD =================== */
+  .job-card {
+    @apply card-hover p-4 flex gap-3;
+  }
+
+  /* =================== GRAD HELPERS =================== */
+  .grad-green {
+    background: linear-gradient(135deg, #1a6b3a 0%, #28a45a 100%);
+  }
+
+  .grad-green-soft {
+    background: linear-gradient(135deg, #e8f5ee 0%, #c8e6d5 100%);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .safe-padding-top {
+    padding-top: var(--safe-area-top);
+  }
+
+  .safe-padding-bottom {
+    padding-bottom: var(--safe-area-bottom);
+  }
+
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

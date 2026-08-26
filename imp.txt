@@ -1,0 +1,332 @@
+# Kopa Connect — MVP Implementation Plan
+
+Kopa Connect is a mobile-first Progressive Web App (PWA) for Nigerian NYSC Corps Members, following their journey from pre-service through POP. It is built on five core pillars: Camp Experience, People Discovery, Open Social Updates, Jobs & Skills, and Marketplace — with supporting features: Chat, Communities, Events, Profiles, and Notifications.
+
+---
+
+## User Review Required
+
+> [!IMPORTANT]
+> This is a large-scale full-stack MVP. I will scaffold the complete project structure, all Vue pages, API routes, and database schema in one pass. Please review the architecture and phasing decisions below before I proceed.
+
+> [!WARNING]
+> The PRD references a previous conversation about "API Internal Server Errors" — this suggests some work may have been attempted before. The workspace currently contains only `doc.txt`. I will build from scratch in the project directory.
+
+> [!CAUTION]
+> Real-time chat (WebSockets) and Vercel Blob storage require paid Vercel plans. For MVP, I will implement the architecture and API structure so they can be activated once credentials are in place. Chat will work as polling-based in MVP.
+
+---
+
+## Open Questions
+
+> [!IMPORTANT]
+> **Q1**: Do you have a Neon PostgreSQL connection string ready? I will create `.env.example` with all required variables so you can fill them in.
+
+> [!IMPORTANT]
+> **Q2**: Do you have a Vercel Blob token ready for file uploads? If not, I'll implement a local file storage fallback for development.
+
+> [!IMPORTANT]
+> **Q3**: Should I generate a logo/icon for Kopa Connect using the image generation tool (NYSC green + white branding), or do you have existing brand assets?
+
+> [!IMPORTANT]
+> **Q4**: The admin route is `/assets` per the PRD. This is unconventional (typically `/admin`). Confirm: should the admin panel truly be at `/assets`?
+
+---
+
+## Proposed Changes
+
+### Phase 1: Project Scaffolding & Foundation
+
+#### [NEW] Project root (Vue 3 + Vite + Tailwind CSS + PWA)
+Initialize with:
+```
+npx create-vite@latest ./ --template vue
+```
+Then install:
+- `tailwindcss`, `postcss`, `autoprefixer`
+- `vue-router`, `pinia`
+- `@fortawesome/fontawesome-free`
+- `vite-plugin-pwa`
+- `leaflet`, `@vue-leaflet/vue-leaflet`
+- `axios`
+- `@vercel/blob` (server-side)
+- `bcryptjs`, `jsonwebtoken`
+- `pg` (node-postgres for Neon)
+
+---
+
+### Phase 2: Project Structure
+
+```
+kopaconnect/
+├── public/
+│   ├── icons/           # PWA icons (72, 96, 128, 144, 152, 192, 384, 512px)
+│   ├── screenshots/     # PWA screenshots
+│   └── manifest.json    # Fallback manifest
+├── src/
+│   ├── assets/
+│   │   └── branding/
+│   │       └── logo.png
+│   ├── components/
+│   │   ├── common/      # Logo, Avatar, Button, Card, Modal, Toast
+│   │   ├── auth/        # LoginForm, RegisterForm (3-step)
+│   │   ├── camp/        # CampDashboard, CampPeopleCard, CampAnnouncement
+│   │   ├── feed/        # PostCard, CreatePost, FeedTabs
+│   │   ├── people/      # PersonCard, DiscoverGrid, SkillBadge
+│   │   ├── jobs/        # JobCard, JobFilter, CreateJobForm
+│   │   ├── marketplace/ # VendorCard, ListingCard, CreateListing
+│   │   ├── chat/        # ConversationList, MessageThread
+│   │   ├── communities/ # CommunityCard, CommunityFeed
+│   │   ├── events/      # EventCard, CreateEvent
+│   │   ├── profile/     # ProfileHeader, SkillsList, CDSInfo
+│   │   ├── pwa/         # InstallAndroid, InstallIOS
+│   │   └── layout/      # MobileNav, DesktopSidebar, AppHeader, CreateMenu
+│   ├── views/
+│   │   ├── auth/        # Login.vue, Register.vue, ForgotPassword.vue
+│   │   ├── camp/        # Camp.vue, CampPeople.vue
+│   │   ├── feed/        # Feed.vue, PostDetail.vue
+│   │   ├── discover/    # Discover.vue, PeopleSearch.vue
+│   │   ├── jobs/        # Jobs.vue, JobDetail.vue, CreateJob.vue
+│   │   ├── marketplace/ # Marketplace.vue, VendorProfile.vue, CreateListing.vue
+│   │   ├── chat/        # Chat.vue, Conversation.vue
+│   │   ├── communities/ # Communities.vue, CommunityDetail.vue
+│   │   ├── events/      # Events.vue, EventDetail.vue, CreateEvent.vue
+│   │   ├── profile/     # Profile.vue, EditProfile.vue, CDSForm.vue, PPAMap.vue
+│   │   ├── notifications/ # Notifications.vue
+│   │   └── admin/       # Admin layout + all admin sub-pages
+│   ├── router/
+│   │   └── index.js     # All routes + auth guards
+│   ├── stores/
+│   │   ├── auth.js      # User auth state (Pinia)
+│   │   ├── feed.js      # Social feed
+│   │   ├── camp.js      # Camp state
+│   │   ├── chat.js      # Chat/messages
+│   │   ├── notifications.js
+│   │   └── pwa.js       # Install prompt state
+│   ├── api/
+│   │   └── index.js     # Axios instance + all API calls
+│   ├── composables/     # useAuth, usePWA, useInfiniteScroll, useGeolocation
+│   ├── utils/           # formatDate, formatRelativeTime, validators
+│   ├── App.vue
+│   ├── main.js
+│   └── style.css        # Tailwind directives + custom CSS
+├── api/                 # Vercel serverless functions (Node.js)
+│   ├── auth/
+│   │   ├── register.js
+│   │   ├── login.js
+│   │   └── forgot-password.js
+│   ├── users/
+│   │   ├── [id].js      # GET/PUT user profile
+│   │   └── discover.js
+│   ├── camp/
+│   │   ├── index.js     # Camp info + updates
+│   │   └── people.js    # People in camp
+│   ├── feed/
+│   │   ├── index.js     # GET feed
+│   │   └── posts/
+│   │       ├── index.js # POST create post
+│   │       └── [id].js  # GET/DELETE post
+│   ├── jobs/
+│   │   ├── index.js
+│   │   └── [id].js
+│   ├── marketplace/
+│   │   ├── index.js
+│   │   ├── vendors/index.js
+│   │   └── listings/[id].js
+│   ├── chat/
+│   │   ├── conversations/index.js
+│   │   └── messages/[id].js
+│   ├── communities/index.js
+│   ├── events/index.js
+│   ├── skills/index.js
+│   ├── notifications/index.js
+│   ├── upload.js        # Vercel Blob upload handler
+│   ├── admin/           # Admin-only API routes
+│   │   ├── users/index.js
+│   │   ├── reports/index.js
+│   │   └── settings/index.js
+│   └── _lib/
+│       ├── db.js        # Neon PostgreSQL connection pool
+│       ├── auth.js      # JWT verify middleware
+│       └── cors.js      # CORS headers helper
+├── db/
+│   └── schema.sql       # Complete normalized schema
+├── .env.example
+├── vite.config.js
+├── tailwind.config.js
+├── postcss.config.js
+└── vercel.json          # Rewrites + function config
+```
+
+---
+
+### Phase 3: Database Schema
+
+#### [NEW] [`schema.sql`](file:///c:/xampp/htdocs/my%20software/kopaconnect/db/schema.sql)
+
+All 28 core tables from the PRD:
+- `users`, `profiles`, `states`, `batches`, `camps`, `user_camps`, `user_locations`
+- `cds_information`, `posts`, `post_media`, `comments`, `likes`
+- `connections`, `conversations`, `conversation_members`, `messages`
+- `jobs`, `job_applications`, `skills`, `user_skills`
+- `vendors`, `marketplace_listings`
+- `communities`, `community_members`
+- `events`, `notifications`, `reports`
+- `admins`, `state_admins`
+
+With: foreign keys, indexes, `created_at`/`updated_at` timestamps, check constraints.
+
+---
+
+### Phase 4: Backend API (Vercel Serverless Functions)
+
+All API routes return JSON. Auth routes issue JWTs stored in `localStorage`. All protected routes verify JWT in `Authorization: Bearer <token>` header.
+
+Key API groups:
+- **Auth**: Register (3-step), Login (email/phone/state-code), Forgot password
+- **Users**: Profile CRUD, discover people, connections
+- **Camp**: Dashboard, announcements, camp people, auto-transition logic
+- **Feed**: CRUD posts + media, likes, comments, share, report
+- **Jobs**: CRUD jobs, search/filter, apply/contact
+- **Marketplace**: Vendors + listings CRUD, search
+- **Chat**: Conversations + messages (polling MVP)
+- **Communities**: CRUD + membership + feed
+- **Events**: CRUD events
+- **Skills**: List skills, add to profile, search by skill
+- **Notifications**: List + mark read
+- **Upload**: Vercel Blob presigned URL handler
+- **Admin**: Full platform management (super + state-scoped)
+
+---
+
+### Phase 5: Frontend Pages & Components
+
+#### Auth
+- Multi-step registration (3 steps with progress indicator)
+- Login with email/phone/state-code switcher
+- Forgot password flow
+
+#### Camp
+- Camp dashboard with announcements, people, events
+- Auto-detects user's current stage (CAMP / PPA / CAREER / POP)
+
+#### Feed
+- Infinite scroll social feed
+- Create post modal (text, image, video, question, opportunity)
+- Post detail with comments
+- Feed tabs: For You / Following / Nearby / Trending
+
+#### People / Discover
+- Grid of person cards with filter chips (state, camp, skills, nearby)
+- Search by name or skill
+
+#### Jobs
+- Job board with search + filter sidebar
+- Job detail page
+- Create job form
+
+#### Marketplace
+- Listing grid + vendor profiles
+- Create listing/vendor form
+
+#### Chat
+- Conversation list + message thread
+
+#### Communities
+- Community grid + detail + feed
+
+#### Events
+- Event list + detail + create form
+
+#### Profile
+- Full profile view (own + others)
+- Edit profile (photo, bio, NYSC info)
+- CDS information form
+- PPA Map (Leaflet + OpenStreetMap)
+
+#### Admin (`/assets`)
+- Separate layout (sidebar + header)
+- Dashboard with stats
+- Users, States, Camps, Posts, Jobs, Marketplace, Communities, Events, Reports management
+- State admin restricted view
+
+---
+
+### Phase 6: PWA
+
+#### [NEW] `vite.config.js` with `vite-plugin-pwa`
+- Full manifest with NYSC green theme (`#1a6b3a`)
+- 8 icon sizes
+- Workbox precaching + runtime caching strategies
+- Standalone display mode
+- Safe-area CSS vars
+
+#### [NEW] `InstallPrompt.vue`
+- Detects Android vs iOS
+- Android: shows native `beforeinstallprompt` button
+- iOS: shows Share → Add to Home Screen instructions
+- Hidden if already in standalone mode
+
+---
+
+### Phase 7: Design System
+
+**Color palette:**
+| Token | Value | Usage |
+|---|---|---|
+| `primary` | `#1a6b3a` | NYSC dark green |
+| `primary-light` | `#28a45a` | Buttons, accents |
+| `primary-pale` | `#e8f5ee` | Backgrounds |
+| `surface` | `#ffffff` | Cards |
+| `gray-50` | `#f9fafb` | App background |
+| `gray-400` | `#9ca3af` | Placeholder text |
+
+**Typography:** Inter (Google Fonts)
+
+**Components:** Rounded cards, large touch targets (min 44px), bottom nav, floating create button, skeleton loaders, empty states, toast notifications.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+```bash
+# After scaffolding
+npm run build   # Verify no build errors
+npm run dev     # Verify dev server starts
+```
+
+### Manual Verification
+1. Register a new user through all 3 steps
+2. Log in with email / phone / state code
+3. View camp dashboard
+4. Create a post in the feed
+5. Browse jobs and marketplace
+6. Open profile and add CDS info + PPA location
+7. Install as PWA on Android/iOS
+8. Visit `/assets` as admin user
+
+---
+
+## Build Phases (Execution Order)
+
+1. **Scaffold** — Vite project, install deps, config files
+2. **Design system** — Tailwind config, global CSS, fonts, icons
+3. **Database** — `schema.sql`, `_lib/db.js`
+4. **Auth API** — register, login, JWT
+5. **Auth UI** — Login, Register (3-step)
+6. **Layout** — App shell, mobile nav, desktop sidebar, create menu
+7. **Feed API + UI** — Posts, likes, comments
+8. **Camp API + UI** — Dashboard, people, auto-transition
+9. **People/Discover API + UI**
+10. **Jobs API + UI**
+11. **Marketplace API + UI**
+12. **Skills API + UI**
+13. **Chat API + UI**
+14. **Communities API + UI**
+15. **Events API + UI**
+16. **Profile UI** — CDS form, PPA map
+17. **Notifications**
+18. **PWA** — Manifest, service worker, install prompts
+19. **Admin panel** — `/assets` route, all management pages
+20. **Polish** — Loading states, empty states, error handling, responsive QA

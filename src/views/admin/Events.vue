@@ -1,0 +1,1 @@
+<template><div><h1 class="text-2xl font-bold text-gray-900 mb-2">Events</h1><p class="text-gray-500 mb-6">Manage events</p><div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 text-center text-gray-400"><i class="fas fa-calendar text-4xl text-gray-200 mb-3 block"></i><p>Review, feature, and remove events from the platform here.</p></div></div></template>

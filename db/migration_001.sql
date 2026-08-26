@@ -1,0 +1,13 @@
+-- Migration: Add missing CDS and PPA fields to profiles table
+
+ALTER TABLE profiles
+ADD COLUMN IF NOT EXISTS ppa_category VARCHAR(100),
+ADD COLUMN IF NOT EXISTS ppa_stipend NUMERIC,
+ADD COLUMN IF NOT EXISTS ppa_accommodation BOOLEAN,
+ADD COLUMN IF NOT EXISTS ppa_transport TEXT,
+ADD COLUMN IF NOT EXISTS ppa_review TEXT,
+ADD COLUMN IF NOT EXISTS cds_name VARCHAR(200),
+ADD COLUMN IF NOT EXISTS cds_meeting_day VARCHAR(20),
+ADD COLUMN IF NOT EXISTS cds_venue TEXT,
+ADD COLUMN IF NOT EXISTS cds_role VARCHAR(100),
+ADD COLUMN IF NOT EXISTS cds_project TEXT;
