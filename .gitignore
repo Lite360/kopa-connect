@@ -3,7 +3,10 @@
 .env.*.local
 node_modules/
 dist/
+dev-dist/
 .vercel/
 *.log
 .DS_Store
 Thumbs.db
+doc.txt
+imp.txt
