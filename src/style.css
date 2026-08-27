@@ -21,7 +21,10 @@
   }
 
   body {
-    @apply font-sans text-gray-800 bg-gray-50 antialiased;
+    @apply font-sans text-gray-800 antialiased;
+    background-color: #fafafa;
+    background-image: radial-gradient(#e5e7eb 1px, transparent 0);
+    background-size: 20px 20px;
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
   }
@@ -261,19 +264,19 @@
 
   /* =================== TAB NAVIGATION =================== */
   .tabs {
-    @apply flex bg-gray-100 rounded-2xl p-1 gap-1;
+    @apply flex bg-gray-100/80 backdrop-blur-sm rounded-2xl p-1 gap-1;
   }
 
   .tab {
-    @apply flex-1 text-center py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200;
+    @apply flex-1 text-center py-2 px-3 rounded-xl text-sm font-semibold transition-all duration-300 select-none cursor-pointer text-gray-500 hover:text-gray-700;
   }
 
   .tab-active {
-    @apply bg-white text-primary-600 shadow-card font-semibold;
+    @apply bg-white text-gray-900 shadow-sm font-bold scale-100;
   }
 
   .tab-inactive {
-    @apply text-gray-500 hover:text-gray-700;
+    @apply hover:bg-gray-200/50;
   }
 
   /* =================== STATUS INDICATORS =================== */

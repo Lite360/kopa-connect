@@ -11,11 +11,17 @@
       </router-view>
     </main>
 
-    <div v-if="!isAdminRoute" class="hidden xl:block w-80 p-6">
-      <AppCard class="bg-primary-50 border-none shadow-none mb-6">
-        <h3 class="font-bold text-primary-800 mb-2">Welcome to Kopa Connect</h3>
-        <p class="text-sm text-primary-700">The social, opportunity, and community platform for Corps Members.</p>
-      </AppCard>
+    <div v-if="!isAdminRoute" class="hidden xl:block w-80 p-6 sticky top-0 h-screen overflow-y-auto">
+      <div class="glass p-5 rounded-3xl mb-6 relative overflow-hidden group">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-transparent z-0 pointer-events-none"></div>
+        <div class="relative z-10">
+          <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-hand-sparkles"></i>
+          </div>
+          <h3 class="font-bold text-gray-900 mb-2 text-lg">Welcome to Kopa Connect</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">The social, opportunity, and community platform for Corps Members.</p>
+        </div>
+      </div>
     </div>
 
     <MobileNav v-if="!isAdminRoute" @open-create="isCreateMenuOpen = true" />

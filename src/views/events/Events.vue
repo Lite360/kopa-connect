@@ -5,13 +5,15 @@
           class="p-2 text-primary-600 hover:bg-primary-50 rounded-full transition-colors"><i
             class="fas fa-plus text-lg"></i></router-link></template>
     </AppHeader>
-    <div class="bg-white border-b border-gray-100 px-4 pt-3 pb-3 flex gap-2">
-      <button @click="timeframe = 'upcoming'; resetAndLoad()"
-        :class="['px-4 py-1.5 rounded-full text-sm font-semibold', timeframe === 'upcoming' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600']">Upcoming</button>
-      <button @click="timeframe = 'past'; resetAndLoad()"
-        :class="['px-4 py-1.5 rounded-full text-sm font-semibold', timeframe === 'past' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600']">Past</button>
+    <div class="bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-3 flex justify-center sticky top-[68px] z-10 shadow-sm">
+      <div class="tabs w-full max-w-sm">
+        <div @click="timeframe = 'upcoming'; resetAndLoad()"
+          :class="['tab', timeframe === 'upcoming' ? 'tab-active' : 'tab-inactive']">Upcoming</div>
+        <div @click="timeframe = 'past'; resetAndLoad()"
+          :class="['tab', timeframe === 'past' ? 'tab-active' : 'tab-inactive']">Past</div>
+      </div>
     </div>
-    <div class="flex-1 p-4">
+    <div class="flex-1 p-4 max-w-3xl mx-auto w-full">
       <div v-if="loading && events.length === 0" class="space-y-3">
         <SkeletonLoader type="card" height="120px" v-for="i in 3" :key="i" />
       </div>
