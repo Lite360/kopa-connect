@@ -43,23 +43,23 @@
         <div class="mt-3 flex items-center justify-between text-gray-500 max-w-sm">
           <button 
             @click.stop="toggleLike"
-            class="flex items-center gap-1.5 p-2 -ml-2 rounded-full transition-colors group"
-            :class="post.is_liked ? 'text-red-500 hover:bg-red-50' : 'hover:text-red-500 hover:bg-red-50'"
+            class="flex items-center gap-1.5 p-2 -ml-2 rounded-full transition-all duration-300 group active:scale-95"
+            :class="post.is_liked ? 'text-red-500 bg-red-50/80 shadow-sm' : 'hover:text-red-500 hover:bg-red-50 hover:shadow-sm'"
           >
-            <i :class="[post.is_liked ? 'fas text-red-500' : 'far group-hover:text-red-500', 'fa-heart']"></i>
+            <i :class="[post.is_liked ? 'fas text-red-500 scale-110' : 'far group-hover:text-red-500 group-hover:scale-110 transition-transform', 'fa-heart']"></i>
             <span class="text-xs font-medium">{{ formatCount(post.likes_count) }}</span>
           </button>
 
           <button 
             @click="goToDetail"
-            class="flex items-center gap-1.5 p-2 rounded-full hover:text-primary-500 hover:bg-primary-50 transition-colors group"
+            class="flex items-center gap-1.5 p-2 rounded-full hover:text-primary-500 hover:bg-primary-50 hover:shadow-sm transition-all duration-300 group active:scale-95"
           >
-            <i class="far fa-comment group-hover:text-primary-500"></i>
+            <i class="far fa-comment group-hover:text-primary-500 group-hover:scale-110 transition-transform"></i>
             <span class="text-xs font-medium">{{ formatCount(post.comments_count) }}</span>
           </button>
           
-          <button class="flex items-center gap-1.5 p-2 rounded-full hover:text-blue-500 hover:bg-blue-50 transition-colors group">
-            <i class="far fa-share-square group-hover:text-blue-500"></i>
+          <button class="flex items-center gap-1.5 p-2 rounded-full hover:text-blue-500 hover:bg-blue-50 hover:shadow-sm transition-all duration-300 group active:scale-95">
+            <i class="far fa-share-square group-hover:text-blue-500 group-hover:scale-110 transition-transform"></i>
           </button>
         </div>
       </div>

@@ -8,17 +8,17 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#1a6b3a',
-          50:  '#e8f5ee',
-          100: '#c8e6d5',
-          200: '#a4d4b8',
-          300: '#7bc29a',
-          400: '#57b080',
-          500: '#28a45a',
-          600: '#1a6b3a',
-          700: '#145430',
-          800: '#0d3d23',
-          900: '#072815'
+          DEFAULT: '#19803f',
+          50:  '#ebfaef',
+          100: '#cff2d8',
+          200: '#a3e8b7',
+          300: '#6bd68f',
+          400: '#3cbb69',
+          500: '#219b4a',
+          600: '#19803f',
+          700: '#156533',
+          800: '#13502b',
+          900: '#104225'
         },
         surface: '#ffffff',
         gray: {
@@ -35,7 +35,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+        sans: ['Outfit', 'Inter', 'system-ui', '-apple-system', 'sans-serif']
       },
       borderRadius: {
         '2xl': '1rem',
@@ -52,10 +52,10 @@ export default {
         'touch': '44px'
       },
       boxShadow: {
-        'card':  '0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.06)',
-        'card-hover': '0 4px 12px 0 rgba(0,0,0,0.10)',
-        'nav':   '0 -1px 0 0 rgba(0,0,0,0.06), 0 -4px 16px rgba(0,0,0,0.04)',
-        'float': '0 8px 24px rgba(26,107,58,0.35)'
+        'card':  '0 2px 8px -2px rgba(0,0,0,0.05), 0 1px 4px -1px rgba(0,0,0,0.03)',
+        'card-hover': '0 12px 24px -6px rgba(0,0,0,0.08), 0 4px 12px -4px rgba(0,0,0,0.04)',
+        'nav':   '0 -4px 24px -8px rgba(0,0,0,0.1)',
+        'float': '0 12px 32px -8px rgba(25, 128, 63, 0.4)'
       },
       animation: {
         'fade-in':    'fadeIn 0.2s ease-out',

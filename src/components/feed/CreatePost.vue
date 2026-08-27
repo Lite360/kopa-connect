@@ -7,7 +7,7 @@
         <textarea 
           v-model="content"
           placeholder="What's happening in camp or your PPA?"
-          class="w-full bg-transparent border-none focus:ring-0 resize-none p-0 text-gray-800 placeholder-gray-500 min-h-[60px]"
+          class="w-full bg-gray-50/50 hover:bg-gray-50 focus:bg-white border border-transparent focus:border-primary-200 rounded-xl transition-all duration-300 focus:ring-4 focus:ring-primary-50/50 resize-none p-3 text-gray-800 placeholder-gray-400 min-h-[60px]"
           rows="2"
           @input="resize"
           ref="textareaRef"

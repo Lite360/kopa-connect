@@ -62,16 +62,16 @@
 
   /* =================== BUTTONS =================== */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-2xl transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed select-none cursor-pointer;
+    @apply inline-flex items-center justify-center gap-2 font-semibold rounded-2xl transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed select-none cursor-pointer;
     min-height: 44px;
   }
 
   .btn-primary {
-    @apply btn bg-primary-600 text-white hover:bg-primary-700 active:scale-95 shadow-sm hover:shadow-md;
+    @apply btn bg-primary-600 text-white hover:bg-primary-500 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 shadow-sm;
   }
 
   .btn-secondary {
-    @apply btn bg-primary-50 text-primary-600 hover:bg-primary-100 active:scale-95;
+    @apply btn bg-primary-50 text-primary-600 hover:bg-primary-100 hover:-translate-y-0.5 active:scale-95;
   }
 
   .btn-outline {
@@ -130,11 +130,11 @@
 
   /* =================== CARDS =================== */
   .card {
-    @apply bg-white rounded-2xl shadow-card border border-gray-100;
+    @apply bg-white/80 backdrop-blur-md rounded-2xl shadow-card border border-white/40;
   }
 
   .card-hover {
-    @apply card hover:shadow-card-hover transition-shadow duration-200 cursor-pointer;
+    @apply card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 cursor-pointer;
   }
 
   .card-body {
@@ -197,13 +197,13 @@
   }
 
   .mobile-header {
-    @apply fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-100 flex items-center justify-between px-4;
+    @apply fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100/50 flex items-center justify-between px-4 shadow-sm;
     height: var(--header-height);
     padding-top: var(--safe-area-top);
   }
 
   .mobile-nav {
-    @apply fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 shadow-nav flex items-center;
+    @apply fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-lg border-t border-gray-100/50 shadow-nav flex items-center;
     height: calc(var(--nav-height) + var(--safe-area-bottom));
     padding-bottom: var(--safe-area-bottom);
   }
@@ -296,12 +296,24 @@
 
   /* =================== NAV ITEMS =================== */
   .nav-item {
-    @apply flex flex-col items-center justify-center gap-0.5 flex-1 py-2 text-gray-400 transition-colors duration-200 cursor-pointer select-none;
+    @apply flex flex-col items-center justify-center gap-0.5 flex-1 py-2 text-gray-400 transition-all duration-300 cursor-pointer select-none;
     min-height: 44px;
   }
 
+  .nav-item i {
+    @apply transition-transform duration-300;
+  }
+
+  .nav-item:active i {
+    @apply scale-95;
+  }
+
   .nav-item-active {
-    @apply text-primary-600;
+    @apply text-primary-600 font-semibold;
+  }
+  
+  .nav-item-active i {
+    @apply scale-110 drop-shadow-md;
   }
 
   .nav-item-label {
@@ -310,7 +322,7 @@
 
   /* =================== CREATE FAB =================== */
   .create-fab {
-    @apply w-12 h-12 rounded-2xl bg-primary-600 flex items-center justify-center shadow-float transition-all duration-200 active:scale-95 cursor-pointer;
+    @apply w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center shadow-float transition-all duration-300 hover:shadow-lg hover:-translate-y-1 active:scale-95 cursor-pointer border border-white/20;
   }
 
   /* =================== CAMP BANNER =================== */
@@ -335,6 +347,15 @@
 
   .grad-green-soft {
     background: linear-gradient(135deg, #e8f5ee 0%, #c8e6d5 100%);
+  }
+
+  /* =================== GLASSMORPHISM UTILS =================== */
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/50 shadow-sm;
+  }
+  
+  .glass-dark {
+    @apply bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 shadow-lg text-white;
   }
 }
 
