@@ -4,11 +4,11 @@
       <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center shrink-0">
         <i class="fas fa-briefcase text-xl"></i>
       </div>
-      
+
       <div class="flex-1 min-w-0">
         <h3 class="font-bold text-gray-900 truncate">{{ job.title }}</h3>
         <p v-if="job.company_name" class="text-sm text-gray-600 truncate">{{ job.company_name }}</p>
-        
+
         <div class="flex items-center gap-3 mt-2 text-xs text-gray-500 flex-wrap">
           <span v-if="job.state_name" class="flex items-center gap-1">
             <i class="fas fa-map-marker-alt text-gray-400"></i>
@@ -20,7 +20,8 @@
           <span v-if="payRange" class="text-primary-700 font-semibold">
             {{ payRange }}
           </span>
-          <span v-if="job.is_external" class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+          <span v-if="job.is_external"
+            class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
             <i class="fas fa-external-link-alt text-[10px]"></i> External
           </span>
         </div>
@@ -59,8 +60,12 @@ const payRange = computed(() => {
 })
 
 const handleClick = () => {
-  if (props.job.is_external && props.job.application_url) {
-    window.open(props.job.application_url, '_blank')
+  if (props.job.is_external) {
+    if (props.job.application_url) {
+      window.open(props.job.application_url, '_blank')
+    } else {
+      alert('This external job listing does not have a direct application link.')
+    }
   } else {
     router.push(`/job/${props.job.id}`)
   }
