@@ -1,5 +1,5 @@
 <template>
-  <AppCard class="mb-3 border border-gray-100" hoverable @click="$router.push(`/job/${job.id}`)">
+  <AppCard class="mb-3 border border-gray-100" hoverable @click="handleClick">
     <div class="flex gap-3">
       <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center shrink-0">
         <i class="fas fa-briefcase text-xl"></i>
@@ -20,6 +20,9 @@
           <span v-if="payRange" class="text-primary-700 font-semibold">
             {{ payRange }}
           </span>
+          <span v-if="job.is_external" class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+            <i class="fas fa-external-link-alt text-[10px]"></i> External
+          </span>
         </div>
 
         <p class="text-xs text-gray-400 mt-2">{{ timeAgo }}</p>
@@ -30,8 +33,11 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { formatDistanceToNow } from 'date-fns'
 import AppCard from '../common/AppCard.vue'
+
+const router = useRouter()
 
 const props = defineProps({
   job: { type: Object, required: true }
@@ -51,4 +57,12 @@ const payRange = computed(() => {
   if (j.pay_min) return `From ${currency}${fmt(j.pay_min)}`
   return `Up to ${currency}${fmt(j.pay_max)}`
 })
+
+const handleClick = () => {
+  if (props.job.is_external && props.job.application_url) {
+    window.open(props.job.application_url, '_blank')
+  } else {
+    router.push(`/job/${props.job.id}`)
+  }
+}
 </script>

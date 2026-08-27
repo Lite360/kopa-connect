@@ -2,6 +2,7 @@
 import { query } from '../_lib/db.js'
 import { withAuth } from '../_lib/auth.js'
 import { withCors, parseBody, getPagination, paginatedResponse } from '../_lib/cors.js'
+import { fetchExternalJobs } from '../_lib/jobApi.js'
 
 export default withCors(async (req, res) => {
   if (req.method === 'GET') {
@@ -51,9 +52,10 @@ async function getJobs(req, res) {
     const result = await query(
       `SELECT j.id, j.title, j.company_name, j.location, j.job_type, j.pay_min, j.pay_max, j.pay_currency, j.pay_period, j.created_at,
               s.name as state_name,
-              u.first_name, u.last_name, pr.avatar_url as poster_avatar
+              u.first_name, u.last_name, pr.avatar_url as poster_avatar,
+              j.application_url
        FROM jobs j
-       JOIN users u ON u.poster_id = u.id
+       JOIN users u ON j.poster_id = u.id
        LEFT JOIN profiles pr ON pr.user_id = u.id
        LEFT JOIN states s ON s.id = j.state_id
        ${whereClause}
@@ -62,7 +64,23 @@ async function getJobs(req, res) {
       params
     )
 
-    return res.status(200).json(paginatedResponse(result.rows, total, page, limit))
+    // Ensure application_url is correctly marked if missing
+    let localJobs = result.rows.map(job => ({ ...job, is_external: false }))
+    let externalJobs = []
+
+    // Fetch external jobs (mostly on first page, or append dynamically)
+    // To keep it simple, fetch external jobs and append to the end of local ones
+    if (page === 1) {
+      externalJobs = await fetchExternalJobs(search || '')
+    }
+
+    const combinedJobs = [...localJobs, ...externalJobs]
+
+    // Calculate total count (local total + external fetched length)
+    // We only accurately paginate local jobs, external jobs just pad page 1
+    const combinedTotal = total + (page === 1 ? externalJobs.length : 0)
+
+    return res.status(200).json(paginatedResponse(combinedJobs, combinedTotal, page, limit))
   } catch (err) {
     console.error('Get jobs error:', err)
     return res.status(500).json({ error: 'Failed to load jobs' })
