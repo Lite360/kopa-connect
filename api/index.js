@@ -108,9 +108,15 @@ const routes = [
 ]
 
 export default async function handler(req, res) {
-  // Build the path from the catch-all [...path] param
-  const segments = req.query.path
-  const path = '/' + (Array.isArray(segments) ? segments.join('/') : (segments || ''))
+  // Extract path from req.url (handle both local and Vercel routing)
+  let urlPath = req.url.split('?')[0] // remove query string
+  if (urlPath.startsWith('/api')) {
+    urlPath = urlPath.slice(4) // remove /api prefix
+  }
+  if (!urlPath.startsWith('/')) {
+    urlPath = '/' + urlPath
+  }
+  const path = urlPath
 
   // Match against route table
   for (const route of routes) {
