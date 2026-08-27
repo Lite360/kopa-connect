@@ -1,7 +1,7 @@
 // api/users/[id].js
-import { query } from '../../_lib/db.js'
-import { withAuth } from '../../_lib/auth.js'
-import { withCors } from '../../_lib/cors.js'
+import { query } from '../_lib/db.js'
+import { withAuth } from '../_lib/auth.js'
+import { withCors } from '../_lib/cors.js'
 
 export default withCors(withAuth(async (req, res, user) => {
   const { id: profileId } = req.query

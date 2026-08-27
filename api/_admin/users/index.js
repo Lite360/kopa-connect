@@ -1,7 +1,7 @@
 // api/admin/users/index.js
-import { query } from '../../../_lib/db.js'
-import { withAdmin } from '../../../_lib/auth.js'
-import { withCors, getPagination, paginatedResponse, parseBody } from '../../../_lib/cors.js'
+import { query } from '../../_lib/db.js'
+import { withAdmin } from '../../_lib/auth.js'
+import { withCors, getPagination, paginatedResponse, parseBody } from '../../_lib/cors.js'
 
 export default withCors(withAdmin(async (req, res, adminUser) => {
   if (req.method === 'GET') {

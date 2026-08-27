@@ -1,7 +1,7 @@
 // api/marketplace/listings/[id].js
-import { query } from '../../../_lib/db.js'
-import { withAuth } from '../../../_lib/auth.js'
-import { withCors, parseBody } from '../../../_lib/cors.js'
+import { query } from '../../_lib/db.js'
+import { withAuth } from '../../_lib/auth.js'
+import { withCors, parseBody } from '../../_lib/cors.js'
 
 export default withCors(async (req, res) => {
   const { id } = req.query
